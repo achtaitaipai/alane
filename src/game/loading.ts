@@ -5,7 +5,7 @@ import fontUrl from '../../assets/font/pixel.ttf'
 import { loadSpriteSheet } from '../core'
 import { loadFont } from '../core/Assets'
 
-export const alanSide = loadSpriteSheet(alanSideUrl, 1, 4)
-export const alanFront = loadSpriteSheet(alanFrontUrl, 1, 3)
-export const alanBack = loadSpriteSheet(alanBackUrl, 1, 3)
+export const alanSide = loadSpriteSheet(alanSideUrl, 4, 1)
+export const alanFront = loadSpriteSheet(alanFrontUrl, 3, 1)
+export const alanBack = loadSpriteSheet(alanBackUrl, 3, 1)
 loadFont(fontUrl, 'font')

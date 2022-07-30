@@ -28,7 +28,7 @@ export function loadImage(url: string) {
 }
 
 export function loadSpriteSheet(url: string, columns: number, rows: number) {
-  const id = _addToLoad(url, _onSpriteSheetLoad, columns, rows)
+  const id = _addToLoad(url, _onSpriteSheetLoad, rows, columns)
   return getSpriteSheet(id)
 }
 
