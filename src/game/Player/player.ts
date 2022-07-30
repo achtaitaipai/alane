@@ -20,14 +20,16 @@ export default function player() {
   const controller = new GridController(50, 10)
 
   const animManager = new AnimManager(anim, playerAnims)
-  anim.pause(0)
-  animManager.set('bottom')
+  animManager.idle('bottom')
 
   controller.onChangeDir = (dir) => {
-    animManager.set(dir)
+    if (controller.walking) animManager.changeAnim(dir)
+    else animManager.idle(dir)
   }
-  controller.onStartWalking = () => anim.play()
-  controller.onStopWalking = () => anim.pause(0)
+  controller.onStartWalking = (direction) => {
+    animManager.changeAnim(direction)
+  }
+  controller.onStopWalking = (direction) => animManager.idle(direction)
   actor.onUpdate = function () {
     if (isPressed('ArrowRight')) controller.goTo('right')
     if (isPressed('ArrowLeft')) controller.goTo('left')

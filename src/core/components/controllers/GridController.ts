@@ -13,8 +13,8 @@ export default class GridController extends Component {
   public speed: number
   public gridSize: number
   public direction: Direction = 'bottom'
-  private _nextDirection?: Direction
   private _oldDirection: Direction = this.direction
+  private _lastRequest?: Direction
   public walking = false
   private _wasWalking = false
   private _futurPos?: { x: number; y: number }
@@ -44,7 +44,9 @@ export default class GridController extends Component {
   }
 
   private _handleCollision({ direction }: { direction: Direction }) {
-    if (direction === this.direction) this._stopWalking()
+    if (direction === this.direction) {
+      this._stopWalking()
+    }
   }
 
   public beforeRemove(): void {
@@ -96,13 +98,13 @@ export default class GridController extends Component {
   }
 
   private _stopWalking() {
+    if (!this.walking) return
     if (this._body && this._position) {
       this._body.velocity.x = 0
       this._body.velocity.y = 0
       this.walking = false
-      if (this._nextDirection) {
-        this.goTo(this._nextDirection)
-        this._nextDirection = undefined
+      if (this._lastRequest) {
+        this.goTo(this._lastRequest)
       }
     }
   }
@@ -111,12 +113,14 @@ export default class GridController extends Component {
     if (!this.walking) {
       this._startWalking(direction)
     } else {
-      this._nextDirection = direction
+      this._lastRequest = direction
     }
   }
 
   private _startWalking(direction: Direction) {
     this.direction = direction
+    this._lastRequest = undefined
+    if (this._collider?.isColliding(direction)) return
     switch (direction) {
       case 'left':
         if (this._body) this._body.velocity.x = -this.speed
