@@ -64,12 +64,33 @@ export default class BoxCollider extends Component {
           actor.id !== this._actor?.id &&
           this._rectCollision(rect1, rect2)
         ) {
-          this.onCollide.notify({ direction, collider: actor })
+          this.collide(direction, actor, true)
           return rect2
         }
       }
     }
     return null
+  }
+
+  public collide(direction: Direction, collider: Actor, initial = false) {
+    this.onCollide.notify({ direction, collider })
+    if (initial && this._actor)
+      collider
+        .get(BoxCollider)
+        ?.collide(this._inverseDirection(direction), this._actor)
+  }
+
+  private _inverseDirection(direction: Direction) {
+    switch (direction) {
+      case 'bottom':
+        return 'top'
+      case 'top':
+        return 'bottom'
+      case 'left':
+        return 'right'
+      case 'right':
+        return 'left'
+    }
   }
 
   private _rectCollision(rect1: Rect, rect2: Rect) {
