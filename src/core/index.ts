@@ -5,5 +5,5 @@ import Scene from './Scene'
 export { Game, Scene, Actor }
 export * from './components'
 export * from './utils'
-export { loadImage, loadSpriteSheet } from './Assets'
+export { loadSprite, loadSpriteSheet, loadFont, loadAudio } from './Assets'
 export { isJustPressed, isPressed } from './Inputs'

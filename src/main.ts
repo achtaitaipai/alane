@@ -7,7 +7,9 @@ import {
   Position,
   Rect,
   Scene,
+  Sprite,
 } from './core'
+import { alanImg, jumpFx } from './game/loading'
 import player from './game/Player/player'
 import Dialog from './game/utils/Dialog'
 import './style.css'
@@ -20,14 +22,15 @@ const dialogBox = new Dialog({ paddingTop: 20, paddingBottom: 20 })
 function obstacle(scene: Scene) {
   const actor = new Actor()
   const pos = new Position(180, 10)
-  const rect = new Rect(60, 60, 'blue')
+  // const rect = new Rect(60, 60, 'blue')
+  const sprite = new Sprite(alanImg)
   const body = new Body()
-  const collider = new BoxCollider(rect)
+  const collider = new BoxCollider(sprite)
   collider.onCollide.add(() => {
     console.log('oeoeoe')
     dialogBox.open('salut Comment ça va ? bien ou quoi ?', scene)
   })
-  return actor.add(pos, rect, body, collider)
+  return actor.add(pos, sprite, body, collider)
 }
 
 function cell(x: number, y: number, size: number) {
@@ -45,7 +48,9 @@ const mainScene = () => {
     }
   }
 
-  scene.onUpdate = () => {}
+  scene.onUpdate = () => {
+    if (isJustPressed('Enter')) jumpFx.play()
+  }
 
   return scene.add(player(), obstacle(scene))
 }
