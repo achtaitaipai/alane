@@ -1,10 +1,10 @@
 import { assets, newId } from './datas'
-import loadImage from './loadImage'
+import _loadImageAsynchronously from './loadImage'
 
 export default function loadSprite(url: string) {
   assets.numberOfAssetsToload++
   const id = newId()
-  loadImage(url).then((image) => {
+  _loadImageAsynchronously(url).then((image) => {
     assets.images.set(id, image)
     assets.numberOfAssetsLoaded++
   })

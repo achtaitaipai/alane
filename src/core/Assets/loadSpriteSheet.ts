@@ -1,5 +1,5 @@
 import { assets, newId } from './datas'
-import loadImage from './loadImage'
+import _loadImageAsynchronously from './loadImage'
 
 export default function loadSpriteSheet(
   url: string,
@@ -8,7 +8,7 @@ export default function loadSpriteSheet(
 ) {
   assets.numberOfAssetsToload++
   const id = newId()
-  loadImage(url).then((imageEl) => {
+  _loadImageAsynchronously(url).then((imageEl) => {
     Promise.all(_sliceImage(imageEl, columns, rows)).then((images) => {
       assets.numberOfAssetsLoaded++
       assets.spriteSheets.set(id, images)

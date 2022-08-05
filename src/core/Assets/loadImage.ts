@@ -1,4 +1,4 @@
-export default function loadImage(src: string) {
+export default function _loadImageAsynchronously(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     let image = new Image()
     image.onload = () => resolve(image)

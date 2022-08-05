@@ -1,58 +1,54 @@
-import {
-  Actor,
-  Body,
-  BoxCollider,
-  Game,
-  isJustPressed,
-  Position,
-  Rect,
-  Scene,
-  Sprite,
-} from './core'
-import { alanImg, jumpFx } from './game/loading'
-import player from './game/Player/player'
-import Dialog from './game/utils/Dialog'
+import { Actor, Game, Position, Rect, Scene } from './core'
+import { drawGrid, grid } from './game/datas/grid'
+import player from './game/actors/player'
+import { CELLSIZE, DEBUG, FULLHEIGHT, FULLWIDTH } from './game/settings'
 import './style.css'
-const sizeCell = 60
 
-export const game = new Game(32 * 60, 18 * 60)
-
-const dialogBox = new Dialog({ paddingTop: 20, paddingBottom: 20 })
-
-function obstacle(scene: Scene) {
-  const actor = new Actor()
-  const pos = new Position(180, 10)
-  // const rect = new Rect(60, 60, 'blue')
-  const sprite = new Sprite(alanImg)
-  const body = new Body()
-  const collider = new BoxCollider(sprite)
-  collider.onCollide.add(() => {
-    console.log('oeoeoe')
-    dialogBox.open('salut Comment ça va ? bien ou quoi ?', scene)
-  })
-  return actor.add(pos, sprite, body, collider)
-}
+export const game = new Game(FULLWIDTH, FULLHEIGHT)
 
 function cell(x: number, y: number, size: number) {
+  const border = 2
   const actor = new Actor()
-  const pos = new Position(x + 1, y + 1)
-  const rect = new Rect(size - 2, size - 2, 'grey')
+  const pos = new Position(x + border / 2, y + border / 2)
+  const rect = new Rect(size - border, size - border, 'white')
   return actor.add(pos, rect)
 }
 
 const mainScene = () => {
   const scene = new Scene()
-  for (let y = 0; y < game.height; y += sizeCell) {
-    for (let x = 0; x < game.width; x += sizeCell) {
-      scene.add(cell(x, y, sizeCell))
+  if (DEBUG) {
+    for (let y = 0; y < game.height; y += CELLSIZE) {
+      for (let x = 0; x < game.width; x += CELLSIZE) {
+        scene.add(cell(x, y, CELLSIZE))
+      }
     }
   }
-
-  scene.onUpdate = () => {
-    if (isJustPressed('Enter')) jumpFx.play()
-  }
-
-  return scene.add(player(), obstacle(scene))
+  drawGrid(grid, scene)
+  return scene.add(
+    player()
+    // obstacle(scene),
+    // item(
+    //   {
+    //     x: 3,
+    //     y: 3,
+    //     name: 'truc',
+    //     sound: jumpFx,
+    //     dialog: 'cool un truc',
+    //     display: new Sprite(keySprite),
+    //   },
+    //   scene
+    // ),
+    // item(
+    //   {
+    //     x: 2,
+    //     y: 2,
+    //     name: 'truc',
+    //     dialog: `chouette j'ai trouvé un coeur qui bouge`,
+    //     display: new Anim(heartSprite, [0, 1]),
+    //   },
+    //   scene
+    // )
+  )
 }
 
 game.scene = mainScene()

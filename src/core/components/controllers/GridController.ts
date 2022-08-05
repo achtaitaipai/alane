@@ -14,7 +14,8 @@ export default class GridController extends Component {
   public gridSize: number
   public direction: Direction = 'bottom'
   private _oldDirection: Direction = this.direction
-  private _lastRequest?: Direction
+  private _lastRequest?: { direction: Direction; time: number }
+  private _requestDelay = 500
   public walking = false
   private _wasWalking = false
   private _futurPos?: { x: number; y: number }
@@ -25,10 +26,11 @@ export default class GridController extends Component {
   public onStopWalking?: (direction: Direction) => void
   public onChangeDir?: (direction: Direction) => void
 
-  constructor(speed: number, gridSize: number) {
+  constructor(speed: number, gridSize: number, requestDelay?: number) {
     super()
     this.speed = speed
     this.gridSize = gridSize
+    this._requestDelay = requestDelay ?? this._requestDelay
   }
 
   public start(actor: Actor): void {
@@ -103,8 +105,11 @@ export default class GridController extends Component {
       this._body.velocity.x = 0
       this._body.velocity.y = 0
       this.walking = false
-      if (this._lastRequest) {
-        this.goTo(this._lastRequest)
+      if (
+        this._lastRequest &&
+        Date.now() - this._lastRequest.time > this._requestDelay
+      ) {
+        this.goTo(this._lastRequest.direction)
       }
     }
   }
@@ -113,7 +118,7 @@ export default class GridController extends Component {
     if (!this.walking) {
       this._startWalking(direction)
     } else {
-      this._lastRequest = direction
+      this._lastRequest = { direction, time: Date.now() }
     }
   }
 

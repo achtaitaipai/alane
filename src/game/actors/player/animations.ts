@@ -1,5 +1,5 @@
-import { alanBack, alanFront, alanSide } from '../loading'
-import { AnimationData } from '../utils/AnimManager'
+import { alanBack, alanFront, alanSide } from '../../loading'
+import { AnimationData } from '../../utils/AnimManager'
 
 export const playerAnims: AnimationData = {
   left: {

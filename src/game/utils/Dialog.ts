@@ -16,9 +16,9 @@ const defaultOptions = {
   nLines: 2,
   x: 0,
   y: 0,
-  fontSize: 48,
+  fontSize: 36,
   textColor: '#000',
-  backgroundColor: '#fff',
+  backgroundColor: '#e3e3e3',
   speed: 0.025,
   lineHeight: 1.12,
   paddingX: 30,
@@ -42,7 +42,7 @@ export default class Dialog {
   private _textChuncks?: string[][]
   private _animRunning = false
 
-  public onComplete?: () => void
+  private _onComplete?: () => void
 
   constructor(options?: Partial<Options>) {
     this.options = { ...this.options, ...options }
@@ -53,9 +53,10 @@ export default class Dialog {
       this.options.paddingBottom
   }
 
-  public open(txt: string, scene: Scene) {
+  public open(txt: string, scene: Scene, callback?: () => void) {
     if (!this.isOpen) {
       this._createDialogElements(txt, scene)
+      this._onComplete = callback
     }
   }
 
@@ -131,9 +132,9 @@ export default class Dialog {
     this._rectObject?.destroy()
     this._linesObjects?.forEach((line) => line.destroy())
     this.isOpen = false
-    if (this.onComplete) {
-      this.onComplete()
-      this.onComplete = undefined
+    if (this._onComplete) {
+      this._onComplete()
+      this._onComplete = undefined
     }
   }
 

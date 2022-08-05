@@ -6,9 +6,9 @@ import {
   GridController,
   isPressed,
   Position,
-} from '../../core'
-import { alanSide } from '../loading'
-import AnimManager from '../utils/AnimManager'
+} from '../../../core'
+import { alanSide } from '../../loading'
+import AnimManager from '../../utils/AnimManager'
 import { playerAnims } from './animations'
 
 export default function player() {
@@ -17,7 +17,7 @@ export default function player() {
   const anim = new Anim(alanSide, [0, 1, 2, 3])
   const collider = new BoxCollider(anim)
   const body = new Body()
-  const controller = new GridController(50, 10)
+  const controller = new GridController(60, 30)
 
   const animManager = new AnimManager(anim, playerAnims)
   animManager.idle('bottom')
