@@ -7,6 +7,7 @@ export default class Drawing {
   constructor(width: number, height: number) {
     this.canvas = this._createCanvas(width, height)
     this.ctx = this.canvas.getContext('2d')!
+    this.ctx.imageSmoothingEnabled = false
     this.width = width
     this.height = height
   }

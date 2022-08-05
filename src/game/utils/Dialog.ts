@@ -5,9 +5,10 @@ import {
   Position,
   Rect,
   Scene,
-  Text,
 } from '../../core'
+import BitmapText from '../../core/components/rendering/BitmapText'
 import { inputsNames } from '../../core/Inputs/inputTypes'
+import { font } from '../loading'
 
 type Options = typeof defaultOptions
 
@@ -16,8 +17,8 @@ const defaultOptions = {
   nLines: 2,
   x: 0,
   y: 0,
-  fontSize: 36,
-  textColor: '#000',
+  fontSize: 24,
+  textColor: 'blue',
   backgroundColor: '#e3e3e3',
   speed: 0.025,
   lineHeight: 1.12,
@@ -95,7 +96,7 @@ export default class Dialog {
 
   private _nextChar() {
     this._charCursor++
-    this._linesObjects![this._lineCursor].get(Text)!.content =
+    this._linesObjects![this._lineCursor].get(BitmapText)!.content =
       this._currentLine.slice(0, this._charCursor)
     if (this._charCursor > this._currentLine.length) {
       this._nextLine()
@@ -122,7 +123,9 @@ export default class Dialog {
       this._lineCursor = 0
       this._time = 0
       this._animRunning = true
-      this._linesObjects?.forEach((line) => (line.get(Text)!.content = ''))
+      this._linesObjects?.forEach(
+        (line) => (line.get(BitmapText)!.content = '')
+      )
     } else {
       this._close()
     }
@@ -140,7 +143,12 @@ export default class Dialog {
 
   private textToLines(txt: string) {
     txt = txt.replace(/( [\?|\!|\:])/g, (str) => str.replace(' ', '\xa0'))
-    const textComponent = new Text('', 'font', this.options.fontSize, '#ffffff')
+    const textComponent = new BitmapText(
+      '',
+      font,
+      this.options.fontSize,
+      '#ffffff'
+    )
     const text = txt.split(' ')
     let result = ['']
     for (const word of text) {
@@ -166,9 +174,9 @@ export default class Dialog {
   private textEl() {
     return Array.from({ length: this.options.nLines }).map((_, i) => {
       const actor = new Actor()
-      const txt = new Text(
+      const txt = new BitmapText(
         '',
-        'font',
+        font,
         this.options.fontSize,
         this.options.textColor
       )

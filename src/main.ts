@@ -1,8 +1,10 @@
-import { Actor, Game, Position, Rect, Scene } from './core'
+import { Actor, Anim, Game, Position, Rect, Scene, Sprite } from './core'
 import { drawGrid, grid } from './game/datas/grid'
 import player from './game/actors/player'
 import { CELLSIZE, DEBUG, FULLHEIGHT, FULLWIDTH } from './game/settings'
 import './style.css'
+import { createItem } from './game/actors/item'
+import { font, heartSprite, jumpFx, keySprite } from './game/loading'
 
 export const game = new Game(FULLWIDTH, FULLHEIGHT)
 
@@ -24,30 +26,33 @@ const mainScene = () => {
     }
   }
   drawGrid(grid, scene)
+  scene.onUpdate = () => {
+    font.fontSize = 62
+    font.draw('salut', 0, 10, game.ctx)
+  }
   return scene.add(
-    player()
-    // obstacle(scene),
-    // item(
-    //   {
-    //     x: 3,
-    //     y: 3,
-    //     name: 'truc',
-    //     sound: jumpFx,
-    //     dialog: 'cool un truc',
-    //     display: new Sprite(keySprite),
-    //   },
-    //   scene
-    // ),
-    // item(
-    //   {
-    //     x: 2,
-    //     y: 2,
-    //     name: 'truc',
-    //     dialog: `chouette j'ai trouvé un coeur qui bouge`,
-    //     display: new Anim(heartSprite, [0, 1]),
-    //   },
-    //   scene
-    // )
+    player(13, 17),
+    createItem(
+      {
+        x: 13,
+        y: 13,
+        name: 'truc',
+        sound: jumpFx,
+        dialog: 'cool un truc',
+        display: new Sprite(keySprite),
+      },
+      scene
+    ),
+    createItem(
+      {
+        x: 11,
+        y: 15,
+        name: 'truc',
+        dialog: `chouette j'ai trouvé un coeur qui bouge`,
+        display: new Anim(heartSprite, [0, 1]),
+      },
+      scene
+    )
   )
 }
 

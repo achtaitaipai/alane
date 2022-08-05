@@ -8,4 +8,4 @@ export const FULLWIDTH = WIDTH * CELLSIZE
 
 export const FULLHEIGHT = HEIGHT * CELLSIZE
 
-export const DEBUG = true
+export const DEBUG = false
